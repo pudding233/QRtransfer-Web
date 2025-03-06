@@ -276,7 +276,7 @@
                 return {
                     seed: seed,
                     degree: degree,
-                    sourceBlocks: selectedBlocks,
+                    sourceBlocks: Array.from(selectedBlocks),  // 确保返回数组
                     data: encodedData
                 };
             }
@@ -291,12 +291,14 @@
             }
 
             selectSourceBlocks(degree, random) {
-                const selected = new Set();
-                while (selected.size < degree) {
+                // 允许重复选择同一个块
+                const selectedBlocks = [];
+                for (let i = 0; i < degree; i++) {
                     const index = random.nextInt(this.totalBlocks);
-                    selected.add(index);
+                    selectedBlocks.push(index);
                 }
-                return Array.from(selected);
+                // 按索引排序以保持一致性
+                return selectedBlocks.sort((a, b) => a - b);
             }
         }
 
